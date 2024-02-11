@@ -6,3 +6,11 @@ body{
   background-color: #f7f7f7;
 }
 
+.slick-slide > div {
+  margin: 0 10px;
+}
+
+.slick-slide{
+  margin-top: 2rem;
+  width: 80%;
+}
