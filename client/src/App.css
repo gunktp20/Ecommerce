@@ -14,3 +14,7 @@ body{
   margin-top: 2rem;
   width: 80%;
 }
+
+.active{
+  @apply text-blue-500
+}

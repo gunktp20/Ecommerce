@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Wallpaper from "../assets/images/furniture-ecommerce (1).jpg";
 
 
+
 import { useNavigate } from "react-router-dom";
 
 const category = [
@@ -92,7 +93,30 @@ function Landing() {
     slidesToShow: 6,
     slidesToScroll: 3,
     nextArrow: <SamplePrevArrow/>,
-    prevArrow: <SampleNextArrow/>
+    prevArrow: <SampleNextArrow/>,
+    responsive: [
+      {
+          breakpoint: 900,
+          settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2,
+          },
+      },
+      {
+          breakpoint: 1150,
+          settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+          },
+      },
+      {
+          breakpoint: 1300,
+          settings: {
+              slidesToShow: 4,
+              slidesToScroll: 4,
+          },
+      },
+  ]
   };
 
   return (
