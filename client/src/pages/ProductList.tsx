@@ -676,6 +676,7 @@ function ProductList() {
 
     const [selectedCategory, setSelectedCategory] = useState<string>("")
     const [productsList, setProductsList] = useState<IProduct[]>(products)
+
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [postsPerPage, setPostsPerPage] = useState<number>(6)
 
@@ -716,16 +717,6 @@ function ProductList() {
         ]
     };
 
-    const indexOfLastPost = currentPage * postsPerPage;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentProducts =  productsList.slice(indexOfFirstPost, indexOfLastPost)
-
-    console.log(currentProducts)
-
-    const paginate = (pageNumber : number) =>{
-        setCurrentPage(pageNumber)
-    }
-
     useEffect(() => {
         if (selectedCategory) {
             const filteredProducts = products.filter((p) => {
@@ -735,6 +726,18 @@ function ProductList() {
         }
 
     }, [selectedCategory])
+
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentProducts =  productsList.slice(indexOfFirstPost, indexOfLastPost)
+
+    console.log("product list",productsList)
+    console.log("currentProducts", currentProducts)
+
+    const paginate = (pageNumber : number) =>{
+        setCurrentPage(pageNumber)
+    }
+
 
     return (
         <Wrapper>
@@ -780,7 +783,7 @@ function ProductList() {
                     })}
                 </div>
             </div>
-                <Pagination postsPerPage={postsPerPage} totalPosts={currentProducts.length} paginate={paginate}/>
+                <Pagination postsPerPage={postsPerPage} totalPosts={productsList.length} paginate={paginate}/>
             <Footer />
         </Wrapper>
     );

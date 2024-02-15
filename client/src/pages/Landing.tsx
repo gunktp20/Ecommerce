@@ -8,7 +8,7 @@ import Wallpaper from "../assets/images/furniture-ecommerce (1).jpg";
 
 
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const category = [
   {
@@ -150,9 +150,12 @@ function Landing() {
           <div className="text-[12px]">ห้องต่างๆ</div>
           <div className="text-[12px]">สินค้าราคาพิเศษ</div>
         </div>
-      </div>
-      <div className="w-[100%] flex justify-center ">
-        <div className="w-[80%]">
+      </div>  
+      
+      <div className="w-[100%] flex justify-center relative">
+      
+        <div className="w-[80%]  relative mt-5">
+        <Link className="h-fit absolute right-0 text-sm top-[-0.5rem] cursor-pointer w-max z-[1000]" to="/product">view all</Link>
           <Slider {...settings}>
             {category.map((d) => (
               <div key={d.name} className="h-[300px] text-black rounded-xl">
