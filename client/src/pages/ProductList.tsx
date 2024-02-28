@@ -731,8 +731,8 @@ function ProductList() {
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentProducts =  productsList.slice(indexOfFirstPost, indexOfLastPost)
 
-    console.log("product list",productsList)
-    console.log("currentProducts", currentProducts)
+    // console.log("product list",productsList)
+    // console.log("currentProducts", currentProducts)
 
     const paginate = (pageNumber : number) =>{
         setCurrentPage(pageNumber)
