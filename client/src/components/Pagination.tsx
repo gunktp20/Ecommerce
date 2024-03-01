@@ -8,7 +8,6 @@ interface IProp {
 
 function Pagination({ postsPerPage, totalPosts, paginate }: IProp) {
     const pageNumbers = [];
-
     for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
         pageNumbers.push(i);
     }

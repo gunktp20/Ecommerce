@@ -8,7 +8,7 @@ interface IProp {
 const ProtectedRoute = ({ children }: IProp) => {
     const { user } = useAppSelector(state => state.auth);
     if (!user) {
-        return <Navigate to="/landing" />;
+        return <Navigate to="/" />;
     }
     return children;
 };

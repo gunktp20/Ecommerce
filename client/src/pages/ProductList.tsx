@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from "../app/hook";
 import { getAllProduct } from "../features/product/productSlice";
 
 interface IProduct {
-    id: string
+    _id: string
     name: string
     description: string
     price: number
@@ -99,6 +99,7 @@ function ProductList() {
     const dispatch = useAppDispatch()
     const { productList, isLoading } = useAppSelector(state => state.product)
     const [selectedCategory, setSelectedCategory] = useState<string>("")
+    const [search, setSearch] = useState<string>("")
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [postsPerPage, setPostsPerPage] = useState<number>(6)
 
@@ -140,7 +141,10 @@ function ProductList() {
     };
 
     useEffect(() => {
-        dispatch(getAllProduct())
+        dispatch(getAllProduct({
+            category:selectedCategory,
+            search:search,
+        }))
         // if (selectedCategory) {
         //     const filteredProducts = productList?.filter((p) => {
         //         return p.category === selectedCategory;
@@ -148,7 +152,7 @@ function ProductList() {
         //     setProductsList(filteredProducts)
         // }
 
-    }, [])
+    }, [selectedCategory])
 
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -160,7 +164,6 @@ function ProductList() {
     const paginate = (pageNumber: number) => {
         setCurrentPage(pageNumber)
     }
-
 
     return (
         <Wrapper>

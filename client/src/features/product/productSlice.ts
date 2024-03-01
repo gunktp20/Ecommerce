@@ -3,6 +3,7 @@ import axios from "axios";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 interface IProduct {
+  _id:string
   name: string;
   description: string;
   price: number;
@@ -22,9 +23,9 @@ const initialState: IProductState = {
 
 export const getAllProduct = createAsyncThunk(
   "auth/register",
-  async (_: void, thunkApi) => {
+  async (queryObject: { category : string , search : string}, thunkApi) => {
     try {
-      const response = await axios.get("http://localhost:5000/product");
+      const response = await axios.get(`http://localhost:5000/product?category=${queryObject.category}&search=${queryObject.search}`);
       console.log(response);
       return response.data;
     } catch (err: any) {
