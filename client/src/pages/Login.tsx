@@ -1,30 +1,37 @@
 import Wrapper from "../assets/wrappers/Login"
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom"
-import { auth, provider } from "../../firebase/firebaseConfig"
+import { auth, provider } from "../firebase/firebaseConfig"
 import { signInWithPopup } from "firebase/auth"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const email = localStorage.getItem('email')
+import { setCredential } from "../features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../app/hook";
 
 function Login() {
 
-    const navigate =  useNavigate();
-    const [value, setValue] = useState<string | null>(email ? JSON.stringify(localStorage.getItem("email") as string) : null)
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch()
+    const { user } = useAppSelector(state => state.auth)
     const handleClick = () => {
-        signInWithPopup(auth, provider).then((data) => {
-            setValue(data.user?.email)
-            console.log(data)
-            localStorage.setItem("email", data.user?.email as string)
+        signInWithPopup(auth, provider).then((data: any) => {
+            console.log(data.user)
+            const user = {
+                name: data.user?.displayName,
+                email: data.user?.email,
+                photoURL: data.user?.photoURL,
+            }
+            dispatch(setCredential({ user, token: data.user?.accessToken }))
+        }).catch((err: any) => {
+            console.log(err)
         })
     }
 
     useEffect(() => {
-        if(value){
+        if (user) {
             navigate("/product")
         }
-    }, [value])
+    }, [user])
     return (
         <Wrapper>
             <div className="bg-white shadow-md flex w-[400px] px-8 py-8 h-fit flex-col relative top-[5rem] justify-center items-center rounded-lg">
@@ -44,7 +51,7 @@ function Login() {
                 </div>
                 <div className="flex w-[100%] mt-5 border-[1px] border-[#8888] items-center justify-center rounded-md h-[38px]">
                     <FcGoogle className="text-[25px] mr-2" />
-                    <button onClick={()=>{
+                    <button onClick={() => {
                         handleClick()
                     }} className="text-[12px] font-bold">Sign In with Google</button>
                 </div>
