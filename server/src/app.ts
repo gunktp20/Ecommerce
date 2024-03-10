@@ -4,6 +4,7 @@ import connectDB from "./db/connect";
 import dotenv from "dotenv";
 import "express-async-errors";
 import productRoute from "./routes/product.route";
+import cartRoute from "./routes/cart.route";
 dotenv.config();
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/product", productRoute);
+app.use("/cart", cartRoute);
 
 const startServer = async () => {
   try {

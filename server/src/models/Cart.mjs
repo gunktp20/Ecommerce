@@ -1,21 +1,19 @@
-import { model, Schema } from "mongoose";
-import mongoose from "mongoose";
-import { CartDocument } from "../types/cart";
+import mongoose , { Schema , model } from "mongoose";
 const ObjectId = mongoose.Schema.Types.ObjectId;
 const cartSchema = new Schema(
   {
     product: { type: ObjectId, ref: "products" },
     email: { type: String, required: true },
     quantity: {
-      type: Number,
+      type: String,
       required: true,
     },
     pricePerUnit: {
-      type: Number,
+      type: String,
       required: true,
     },
     totalPrice: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
@@ -24,4 +22,4 @@ const cartSchema = new Schema(
   }
 );
 
-export const Cart = model<CartDocument>("carts", cartSchema);
+export const Cart = model("carts", cartSchema);

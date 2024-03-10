@@ -1,11 +1,11 @@
 import { Model, Document } from "mongoose";
 
 export interface Cart {
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  category: string;
+  product: string;
+  email: string;
+  quantity: number;
+  pricePerUnit: number;
+  totalPrice: number;
 }
 
 export interface CartDocument extends Cart, Document {

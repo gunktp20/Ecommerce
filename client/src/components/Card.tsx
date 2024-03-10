@@ -18,10 +18,12 @@ function Card(props: IProp) {
                 {/* <div className="pl-5 text-[14px]">Description {props.description}</div> */}
                 <div className="text-[12px] pl-5">Category {props.category}</div>
                 <div className="flex justify-between pl-5 items-center pr-5 mt-2">
-                    <div className="text-[#e10a0a]">{props.price}</div>
+                    <div className="text-[#df7e0d]">{props.price}</div>
                 </div>
+                
             </div>
         </div>
+        // text-[#e10a0a]
 
 
     )

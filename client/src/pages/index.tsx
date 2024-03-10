@@ -1,6 +1,7 @@
-import Landing from "./Landing";
 import Login from "./Login";
 import Register from "./Register";
 import ProductList from "./ProductList";
+import Home from "./Home";
+import Cart from "./Cart";
 
-export { Landing, Login, Register, ProductList }
+export { Login, Register, ProductList , Home ,Cart}
