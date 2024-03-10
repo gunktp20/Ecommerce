@@ -6,8 +6,6 @@ body{
   font-family: "Prompt", sans-serif;
   background-color: #f7f7f7;
 }
-
-
 .slick-slide > div {
   margin: 0 10px;
 }
@@ -40,3 +38,7 @@ body{
       transform: rotate(360deg);
   }
   } 
+
+  .MuiSnackbar-anchorOriginTopRight {
+    top: 90px !important;
+  }

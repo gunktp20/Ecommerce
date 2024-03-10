@@ -1,4 +1,11 @@
-import { Navbar, Card, SimpleSlider, Footer } from "../components";
+import {
+  Navbar,
+  Card,
+  SimpleSlider,
+  Footer,
+  SuccessDialog,
+  SnackBar,
+} from "../components";
 import HeadRoom from "react-headroom";
 import Wrapper from "../assets/wrappers/Landing";
 import Slider from "react-slick";
@@ -10,6 +17,7 @@ import { useEffect, useState } from "react";
 import Pagination from "../components/Pagination";
 import { useAppDispatch, useAppSelector } from "../app/hook";
 import { getAllProduct } from "../features/product/productSlice";
+import axios from "axios";
 
 interface IProduct {
   _id: string;
@@ -115,13 +123,66 @@ function Home() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { productList, isLoading } = useAppSelector((state) => state.product);
+  const { user } = useAppSelector((state) => state.auth);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [postsPerPage, setPostsPerPage] = useState<number>(6);
+  const [postsPerPage, setPostsPerPage] = useState<number>(12);
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [showSnackBar, setShowSnackBar] = useState<boolean>(false);
+  const [snackBarText, setSnackBarText] = useState<string>("");
+  const [snackBarType, setSnackBarType] = useState<
+    "error" | "success" | "info" | "warning"
+  >("error");
+
   const filterByCategory = (selectedCategory: string) => {
     setSelectedCategory(selectedCategory);
   };
+  const [timeoutIds, setTimeoutIds] = useState<any>([]);
+  // Function to clear all running timeouts
+  const clearAllTimeouts = () => {
+    timeoutIds.forEach((timeoutId: any) => clearTimeout(timeoutId));
+    setTimeoutIds([]); // Clear the timeout IDs from state
+  };
+  // Function to set a new timeout
+  const clearAlert = () => {
+    clearAllTimeouts(); // Clear existing timeouts before setting a new one
+    const newTimeoutId = setTimeout(() => {
+      // Your timeout function logic here
+      setShowSnackBar(false);
+    }, 3000);
+    setTimeoutIds([newTimeoutId]); // Store the new timeout ID in state
+  };
+
+  const insertProductToCart = async (productID: string, quantity: number) => {
+    setLoading(true);
+    try {
+      await axios.post(`http://localhost:5000/cart`, {
+        productID: productID,
+        email: user.email,
+        quantity:quantity,
+      });
+      setLoading(false);
+      setShowSnackBar(true);
+      setSnackBarType("success");
+      setSnackBarText("Added product in your Cart");
+      clearAlert();
+      setLoading(false);
+    } catch (err: any) {
+      console.log(err);
+      const msg =
+        typeof err?.response?.data?.message === "object"
+          ? err?.response?.data?.message[0]
+          : err?.response?.data?.message;
+      setShowSnackBar(true);
+      setSnackBarType("error");
+      setSnackBarText(msg);
+      clearAlert();
+      setLoading(false);
+    }
+  };
+  
   const settings = {
     infinite: true,
     speed: 500,
@@ -174,20 +235,28 @@ function Home() {
   return (
     <Wrapper>
       <div className="bg-[#000] w-[100%] flex justify-center text-[#fff] text-[12px] pt-2 pb-2 gap-[10rem]">
-        <div>บริการผ่อนชำระ 0%</div>
-        <div>จัดส่งเริ่มต้นที่ 99 บาท</div>
-        <div>นโยบายเปลี่ยนคืนสินค้าใน 365 วัน</div>
+        <div className="flex justify-between w-[40%] sm:w-[100%] items-center">
+          <div className="sm:text-[11px]">บริการผ่อนชำระ 0%</div>
+          <div className="sm:text-[11px]">จัดส่งเริ่มต้นที่ 99 บาท</div>
+          <div className="sm:text-[11px]">นโยบายเปลี่ยนคืนสินค้าใน 365 วัน</div>
+        </div>
       </div>
+      <SnackBar 
+        severity={snackBarType}
+        showSnackBar={showSnackBar}
+        snackBarText={snackBarText}
+        setShowSnackBar={setShowSnackBar}
+      />
       <HeadRoom>
         <Navbar />
       </HeadRoom>
-      <div className="w-[100%] flex justify-center">
-        <div className="w-[80%] relative flex justify-center items-center">
+      <div className="w-[100%] flex justify-center ">
+        <div className="w-[80%] relative flex justify-center items-center sm:w-[100%] md:w-[100%]">
           <img
             src={Wallpaper}
             className="object-cover w-[100%] h-[550px] "
           ></img>
-          <div className="absolute text-[#fff] w-[900px] z-10 flex flex-col justify-center items-center">
+          <div className="absolute text-[#fff] z-10 flex flex-col justify-center items-center sm:mx-5">
             <div className="font-thin text-[38px]">
               Welcome to our Ecommerce Website
             </div>
@@ -203,7 +272,9 @@ function Home() {
       </div>
       <div className="flex justify-center mt-5">
         <div className="flex gap-12 w-[80%] border-b-1 border-[#000] border-b-[1px] pb-3 border-[#c7c7c7]">
-          <div className="text-[12px] text-[#150A04] font-bold">สินค้าทั้งหมด</div>
+          <div className="text-[12px] text-[#150A04] font-bold">
+            สินค้าทั้งหมด
+          </div>
           <div className="text-[12px]">ห้องต่างๆ</div>
           <div className="text-[12px]">สินค้าราคาพิเศษ</div>
         </div>
@@ -248,6 +319,8 @@ function Home() {
                   price={p.price}
                   category={p.category}
                   img={p.img}
+                  productID={p._id}
+                  insertProductToCart={insertProductToCart}
                 />
               );
             })}
