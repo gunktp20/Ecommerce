@@ -26,7 +26,6 @@ function Navbar() {
       setIsLoading(false);
     }
   };
-
   useEffect(()=>{
     fetchAllCarts()
   },[])
@@ -53,7 +52,7 @@ function Navbar() {
             <div className={`${carts.length > 0 ? "flex":"hidden"} bg-[#df7e0d] rounded-[100%] text-white text-center absolute cursor-pointer top-[-3px] right-[-10px] w-[20px] h-[20px] text-[11px] p-1 flex items-center justify-center`}>{carts.length}</div>
           </div>
           {user ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 text-sm">
               {user.name}{" "}
               <img
                 src={user.photoURL}
@@ -61,7 +60,7 @@ function Navbar() {
               ></img>
             </div>
           ) : (
-            <Link to="/login">
+            <Link to="/login" className="flex gap-3 text-[12px] items-center">
               <IoPerson className="text-[20px]" /> เข้าสู่ระบบ / สมัครสมาชิก
             </Link>
           )} 
